@@ -30,6 +30,8 @@ services:
       MYSQL_DATABASE: people
     ports:
       - "3309:3306"
+    depends_on:
+      - mariadb1
     networks:
       - mariadb_network
 
@@ -45,6 +47,19 @@ services:
       - mariadb2
     volumes:
       - ./maxscale.cnf:/etc/maxscale.cnf
+    networks:
+      - mariadb_network
+
+  keycloak:
+    container_name: keycloak
+    image: quay.io/keycloak/keycloak:latest
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+      DB_VENDOR: H2
+    ports:
+      - "8080:8080"
+    entrypoint: [ "/opt/keycloak/bin/kc.sh", "start-dev" ]
     networks:
       - mariadb_network
 
