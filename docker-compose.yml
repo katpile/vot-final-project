@@ -1,0 +1,53 @@
+version: '3.8'
+
+services:
+  mariadb1:
+    build:
+      context: .
+      dockerfile: Dockerfile.mariadb1
+    image: mariadb:latest
+    container_name: mariadb1
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_USER: maxscale_user
+      MYSQL_PASSWORD: 12345678
+      MYSQL_DATABASE: people
+    ports:
+      - "3308:3306"
+    networks:
+      - mariadb_network
+
+  mariadb2:
+    build:
+      context: .
+      dockerfile: Dockerfile.mariadb2
+    image: mariadb:latest
+    container_name: mariadb2
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_USER: maxscale_user
+      MYSQL_PASSWORD: 12345678
+      MYSQL_DATABASE: people
+    ports:
+      - "3309:3306"
+    networks:
+      - mariadb_network
+
+  maxscale:
+    container_name: maxscale
+    image: mariadb/maxscale:latest
+    ports:
+      - "4008:4008"
+      - "4006:4006"
+      - "8989:8989"
+    depends_on:
+      - mariadb1
+      - mariadb2
+    volumes:
+      - ./maxscale.cnf:/etc/maxscale.cnf
+    networks:
+      - mariadb_network
+
+networks:
+  mariadb_network:
+    driver: bridge

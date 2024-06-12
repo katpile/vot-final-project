@@ -1,0 +1,7 @@
+FROM mariadb:latest
+
+COPY docker_config/galera_cluster1.cnf /etc/mysql/mariadb.conf.d/60-galera.cnf
+COPY docker_config/init-mariadb.sql /docker-entrypoint-initdb.d/init.sql
+
+RUN chmod 644 /etc/mysql/mariadb.conf.d/60-galera.cnf
+RUN chmod 644 /docker-entrypoint-initdb.d/init.sql
