@@ -25,7 +25,7 @@ type=monitor
 module=galeramon
 servers=server1,server2
 user=root
-password=example
+password=rootpassword
 monitor_interval=2000ms
 
 # Service that listens for incoming client connections and routes queries to the servers

@@ -5,3 +5,6 @@ COPY docker_config/init-mariadb.sql /docker-entrypoint-initdb.d/init.sql
 
 RUN chmod 644 /etc/mysql/mariadb.conf.d/60-galera.cnf
 RUN chmod 644 /docker-entrypoint-initdb.d/init.sql
+
+# Install mariadb-client
+RUN apt-get update && apt-get install -y mariadb-client
